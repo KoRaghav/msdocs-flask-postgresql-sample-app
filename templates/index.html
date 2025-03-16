@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Restaurant List{% endblock %}
+{% block title %}Product Catalogue Application{% endblock %}
 {% block head %}
     {{ super() }}
     <style>
@@ -41,7 +41,7 @@
   </style>
 {% endblock %}
 {% block content %}
-      <h1>Restaurants</h1>
+      <h1>Products</h1>
 
       {% if True %}
           <table class="table">
@@ -53,20 +53,20 @@
                   </tr>
               </thead>
               <tbody>
-                  {% for restaurant in restaurants %}
+                  {% for product in products %}
                       <tr>
-                          <td>{{ restaurant.name }}</td>
+                          <td>{{ product.name }}</td>
                           <td>{% include "star_rating.html" %}</td>
-                          <td class="text-end"><a href="{{ url_for('details', id=restaurant.id) }}" class="btn btn-sm btn-primary">Details</a></td>
+                          <td class="text-end"><a href="{{ url_for('details', id=product.id) }}" class="btn btn-sm btn-primary">Details</a></td>
                       </tr>
                   {% endfor %}
               </tbody>
           </table>
       {% else %}
-          <p>No restaurants exist.  Select Add new restaurant to add one.</p>
+          <p>No products exist.  Select Add new product to add one.</p>
       {% endif %}
 
       <div class="d-flex justify-content-end">
-              <a href="{{ url_for('create_restaurant') }}" class="btn btn-success px-4 gap-3">Add new restaurant</a>
+              <a href="{{ url_for('create_product') }}" class="btn btn-success px-4 gap-3">Add new product</a>
       </div>
 {% endblock %}

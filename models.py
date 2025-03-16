@@ -4,11 +4,10 @@ from sqlalchemy.orm import validates
 from app import db
 
 
-class Restaurant(db.Model):
-    __tablename__ = 'restaurant'
+class Product(db.Model):
+    __tablename__ = 'product'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
-    street_address = Column(String(50))
     description = Column(String(250))
 
     def __str__(self):
@@ -17,7 +16,7 @@ class Restaurant(db.Model):
 class Review(db.Model):
     __tablename__ = 'review'
     id = Column(Integer, primary_key=True)
-    restaurant = Column(Integer, ForeignKey('restaurant.id', ondelete="CASCADE"))
+    product = Column(Integer, ForeignKey('product.id', ondelete="CASCADE"))
     user_name = Column(String(30))
     rating = Column(Integer)
     review_text = Column(String(500))
