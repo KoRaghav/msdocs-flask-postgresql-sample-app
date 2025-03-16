@@ -10,7 +10,6 @@ from flask_wtf.csrf import CSRFProtect
 app = Flask(__name__, static_folder='static')
 csrf = CSRFProtect(app)
 
-# WEBSITE_HOSTNAME exists only in production environment
 if 'WEBSITE_HOSTNAME' not in os.environ:
     # local development, where we'll use environment variables
     print("Loading config.development and environment variables from .env file.")
@@ -25,53 +24,46 @@ app.config.update(
     SQLALCHEMY_TRACK_MODIFICATIONS=False,
 )
 
-# Initialize the database connection
 db = SQLAlchemy(app)
-
-# Enable Flask-Migrate commands "flask db init/migrate/upgrade" to work
 migrate = Migrate(app, db)
-
-# The import must be done after db initialization due to circular import issue
-from models import Restaurant, Review
+from models import Product, Review
 
 @app.route('/', methods=['GET'])
 def index():
     print('Request for index page received')
-    restaurants = Restaurant.query.all()
-    return render_template('index.html', restaurants=restaurants)
+    products = Product.query.all()
+    return render_template('index.html', products=products)
 
 @app.route('/<int:id>', methods=['GET'])
 def details(id):
-    restaurant = Restaurant.query.where(Restaurant.id == id).first()
-    reviews = Review.query.where(Review.restaurant == id)
-    return render_template('details.html', restaurant=restaurant, reviews=reviews)
+    product = Product.query.where(Product.id == id).first()
+    reviews = Review.query.where(Review.product == id)
+    return render_template('details.html', product=product, reviews=reviews)
 
 @app.route('/create', methods=['GET'])
-def create_restaurant():
-    print('Request for add restaurant page received')
-    return render_template('create_restaurant.html')
+def create_product():
+    print('Request for add product page received')
+    return render_template('create_product.html')
 
 @app.route('/add', methods=['POST'])
 @csrf.exempt
-def add_restaurant():
+def add_product():
     try:
-        name = request.values.get('restaurant_name')
-        street_address = request.values.get('street_address')
+        name = request.values.get('product_name')
         description = request.values.get('description')
     except (KeyError):
         # Redisplay the question voting form.
-        return render_template('add_restaurant.html', {
-            'error_message': "You must include a restaurant name, address, and description",
+        return render_template('create_product.html', {
+            'error_message': "You must include a name and description",
         })
     else:
-        restaurant = Restaurant()
-        restaurant.name = name
-        restaurant.street_address = street_address
-        restaurant.description = description
-        db.session.add(restaurant)
+        product = Product()
+        product.name = name
+        product.description = description
+        db.session.add(product)
         db.session.commit()
 
-        return redirect(url_for('details', id=restaurant.id))
+        return redirect(url_for('details', id=product.id))
 
 @app.route('/review/<int:id>', methods=['POST'])
 @csrf.exempt
@@ -87,7 +79,7 @@ def add_review(id):
         })
     else:
         review = Review()
-        review.restaurant = id
+        review.product = id
         review.review_date = datetime.now()
         review.user_name = user_name
         review.rating = int(rating)
@@ -100,7 +92,7 @@ def add_review(id):
 @app.context_processor
 def utility_processor():
     def star_rating(id):
-        reviews = Review.query.where(Review.restaurant == id)
+        reviews = Review.query.where(Review.product == id)
 
         ratings = []
         review_count = 0

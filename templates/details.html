@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Restaurant Details{% endblock %}
+{% block title %}Product Details{% endblock %}
 {% block head %}
     {{ super() }}
     <style>
@@ -10,14 +10,10 @@
   </style>
 {% endblock %}
 {% block content %}
-  <h1>{{ restaurant.name }}</h1> 
-  <div class="row">
-      <div class="col-md-2 fw-bold">Street address:</div>
-      <div class="col">{{ restaurant.street_address }}</div>
-  </div>
+  <h1>{{ product.name }}</h1> 
   <div class="row">
       <div class="col-md-2 fw-bold">Description:</div>
-      <div class="col">{{ restaurant.description }}</div>                
+      <div class="col">{{ product.description }}</div>                
   </div>
   <div class="row">
       <div class="col-md-2 fw-bold">Rating:</div>
@@ -55,7 +51,7 @@
             </tbody>
         </table>
     {% else %}
-        <p>No reviews of this restaurant yet.</p>
+        <p>No reviews of this product yet.</p>
     {% endif %}
 
     <!-- Modal -->
@@ -66,7 +62,7 @@
             <h5 class="modal-title" id="addReviewModalLabel">Add Review</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-              <form method="POST" action="{{ url_for('add_review', id=restaurant.id) }}">
+              <form method="POST" action="{{ url_for('add_review', id=product.id) }}">
 
               <div class="modal-body">
 
