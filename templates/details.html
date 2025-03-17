@@ -7,6 +7,37 @@
           min-height: 75rem;
           padding-top: 4.5rem;
       }
+
+      .score {
+        display: block;
+        font-size: 16px;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .score-wrap {
+        display: inline-block;
+        position: relative;
+        height: 19px;
+      }
+      
+      .score .stars-active {
+        color: #EEBD01;
+        position: relative;
+        z-index: 10;
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      
+      .score .stars-inactive {
+        color: grey;
+        position: absolute;
+        top: 0;
+        left: 0;
+        -webkit-text-stroke: initial;
+        /* overflow: hidden; */
+      }      
   </style>
 {% endblock %}
 {% block content %}
@@ -17,7 +48,7 @@
   </div>
   <div class="row">
       <div class="col-md-2 fw-bold">Rating:</div>
-      <div class="col"></div>                
+      <div class="col">{% include "star_rating.html" %}</div>                
   </div>
 
   <h4 class="mt-5">Reviews</h4>
@@ -66,10 +97,6 @@
 
               <div class="modal-body">
 
-                <div class="mb-3">                        
-                    <label for="user_name" class="form-label fw-bold">Your name</label>
-                    <input type="text" class="form-control" id="user_name" name="user_name">
-                  </div>
                   <div class="mb-3">
                     <label class="form-label fw-bold">Rating</label>
 
